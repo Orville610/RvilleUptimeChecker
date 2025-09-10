@@ -8,18 +8,20 @@
 #
 # 🔼 Upptime @v1.41.0
 # GitHub-powered open-source uptime monitor and status page by Anand Chowdhary
-
+#
 # * Source: https://github.com/upptime/upptime
 # * Docs and more: https://upptime.js.org
 # * More by Anand Chowdhary: https://anandchowdhary.com
 
 name: Update Template CI
+
 on:
   schedule:
     - cron: "0 0 * * *"
   repository_dispatch:
     types: [update_template]
   workflow_dispatch:
+
 jobs:
   release:
     name: Build
@@ -37,31 +39,3 @@ jobs:
           command: "update-template"
         env:
           GH_PAT: ${{ secrets.GH_PAT || github.token }}
-
-      - name: Trigger Graphs CI
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Graphs CI
-          ref: master
-          token: ${{ secrets.GH_PAT }}
-
-      - name: Trigger Summary CI
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Summary CI
-          ref: master
-          token: ${{ secrets.GH_PAT }}
-
-      - name: Trigger Uptime CI
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Uptime CI
-          ref: master
-          token: ${{ secrets.GH_PAT }}
-
-      - name: Trigger Updates CI
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Updates CI
-          ref: master
-          token: ${{ secrets.GH_PAT }}
