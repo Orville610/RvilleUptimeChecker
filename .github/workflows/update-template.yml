@@ -13,7 +13,6 @@
 # * Docs and more: https://upptime.js.org
 # * More by Anand Chowdhary: https://anandchowdhary.com
 
-
 name: Update Template CI
 on:
   schedule:
@@ -31,9 +30,38 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_PAT || github.token }}
+
       - name: Update template
         uses: upptime/uptime-monitor@master
         with:
           command: "update-template"
         env:
           GH_PAT: ${{ secrets.GH_PAT || github.token }}
+
+      - name: Trigger Graphs CI
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Graphs CI
+          ref: master
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Trigger Summary CI
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Summary CI
+          ref: master
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Trigger Uptime CI
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Uptime CI
+          ref: master
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Trigger Updates CI
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Updates CI
+          ref: master
+          token: ${{ secrets.GH_PAT }}
